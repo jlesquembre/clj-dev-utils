@@ -9,14 +9,16 @@ Take a look to the `:user` alias.
 
 ## Installation
 
-Add the dependency:
+Add the dependency to your project, or to your `~/.config/clojure/deps.edn`:
 
 ```edn
-
 {:aliases
  {:user
   {:extra-deps {me.lafuente/clj-dev-utils {:git/url "https://github.com/jlesquembre/clj-dev-utils"
-                                           :tag     "1.0"}}}}}
+                                           :git/tag "1.0"
+                                           :git/sha "7d76d43"}}
+   :exec-fn local-utils/init}}}
+
 ```
 
 Alternatively, if you prefer to clone the project locally:
@@ -24,7 +26,8 @@ Alternatively, if you prefer to clone the project locally:
 ```edn
 {:aliases
  {:user
-  {:extra-deps {me.lafuente/clj-dev-utils {:local/root "/path/to/clj-dev-utils"}}}}}
+  {:extra-deps {me.lafuente/clj-dev-utils {:local/root "/path/to/clj-dev-utils"}}
+   :exec-fn local-utils/init}}}
 ```
 
 ## Usage
