@@ -16,7 +16,7 @@ jobs:
       - name: Update clj dependencies
         run:
           clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version
-          "RELEASE"}}}' -M -m antq.core -d dotfiles/clojure --upgrade --force
+          "RELEASE"}}}' -M -m antq.core --upgrade --force
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@main
