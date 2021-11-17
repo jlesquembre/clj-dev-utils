@@ -9,17 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: DeLaGuardo/setup-clojure@master
+      - uses: DeLaGuardo/setup-clojure@3.5
         with:
           tools-deps: latest
 
       - name: Update clj dependencies
         run:
           clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version
-          "RELEASE"}}}' -M -m antq.core --upgrade --force
+          "RELEASE"}}}' -M -m antq.core -d dotfiles/clojure --upgrade --force
+          --skip=github-action
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@main
+        uses: peter-evans/create-pull-request@v3
         with:
           commit-message: Update clojure dependencies
           title: Update clojure dependencies
