@@ -6,6 +6,7 @@
     [lambdaisland.deep-diff2 :as ddiff]
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
     [hashp.core]
+    [portal.api :as p]
     [nrepl.cmdline]))
 
 ;; ------------
@@ -53,6 +54,13 @@
   []
   (nrepl.cmdline/-main "--middleware" "[cider.nrepl/cider-middleware]"))
 
+(defn diff-pp
+  "Compare two values recursively."
+  [expected actual]
+  (ddiff/pretty-print (ddiff/diff expected actual)))
+
+(def portal (p/open))
+
 ;; See
 ;; https://github.com/gfredericks/dot-slash-2
 (defn my-dot-slash []
@@ -64,6 +72,7 @@
 
         {:var lambdaisland.deep-diff2/diff
          :name ~'diff}
+        diff-pp
 
         {:var letsc*
          :name ~'letsc}
@@ -81,7 +90,11 @@
         clojure.repl/dir
         clojure.java.shell/sh
 
-        com.gfredericks.repl/pp]}))
+        com.gfredericks.repl/pp
+
+        portal
+        {:var portal.api/clear
+         :name ~'pclear}]}))
 
 (defn init
   [{:keys [main args exec nrepl]
@@ -98,6 +111,7 @@
       (println (str "Executing " main))
       (apply (resolve main) args)))
 
+  (add-tap #'p/submit)
   (when nrepl
     (start-nrepl)))
 

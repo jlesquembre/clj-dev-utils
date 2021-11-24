@@ -5,6 +5,7 @@
   com.gfredericks/dot-slash-2  {:mvn/version "0.1.5"}
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
   nrepl/nrepl  {:mvn/version "0.8.3"}
-  cider/cider-nrepl {:mvn/version "0.27.2"}}
+  cider/cider-nrepl {:mvn/version "0.27.2"}
+  djblue/portal {:mvn/version "0.18.0"}}
  :paths ["src"]}
 
