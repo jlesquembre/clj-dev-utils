@@ -59,7 +59,7 @@
   [expected actual]
   (ddiff/pretty-print (ddiff/diff expected actual)))
 
-(def portal (p/open))
+(defonce portal (p/open))
 
 ;; See
 ;; https://github.com/gfredericks/dot-slash-2
