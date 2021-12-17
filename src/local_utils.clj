@@ -112,6 +112,7 @@
       (apply (resolve main) args)))
 
   (add-tap #'p/submit)
+  (set! *warn-on-reflection* true)
   (when nrepl
     (start-nrepl)))
 
