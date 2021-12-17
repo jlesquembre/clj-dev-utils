@@ -1,7 +1,5 @@
 (ns local-utils
   (:require
-    [clojure.java.classpath :as classpath]
-    [clojure.java.io :as io]
     [clojure.reflect :refer [reflect]]
     [lambdaisland.deep-diff2 :as ddiff]
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
