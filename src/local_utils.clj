@@ -5,7 +5,8 @@
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
     [hashp.core]
     [portal.api :as p]
-    [nrepl.cmdline]))
+    [nrepl.cmdline]
+    [clojure.tools.namespace.repl :as c.t.n.r]))
 
 ;; ------------
 ;;
@@ -57,6 +58,7 @@
   [expected actual]
   (ddiff/pretty-print (ddiff/diff expected actual)))
 
+(c.t.n.r/disable-reload!)
 (defonce portal (p/open))
 
 ;; See
