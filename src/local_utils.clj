@@ -1,6 +1,7 @@
 (ns local-utils
   (:require
     [clojure.reflect :refer [reflect]]
+    [clojure.pprint :as pprint]
     [lambdaisland.deep-diff2 :as ddiff]
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
     [hashp.core]
@@ -58,6 +59,14 @@
   [expected actual]
   (ddiff/pretty-print (ddiff/diff expected actual)))
 
+(defn spit-pp
+  "Spit pretty-printed object"
+  [f content & options]
+  (if options
+    (spit f (with-out-str (pprint/pprint content)) options)
+    (spit f (with-out-str (pprint/pprint content)))))
+
+
 (c.t.n.r/disable-reload!)
 (defonce portal (p/open))
 
@@ -73,6 +82,7 @@
         {:var lambdaisland.deep-diff2/diff
          :name ~'diff}
         diff-pp
+        spit-pp
 
         {:var letsc*
          :name ~'letsc}
