@@ -122,6 +122,11 @@
       (apply (resolve main) args)))
 
   (add-tap #'p/submit)
+
+  (try
+    ((requiring-resolve 'malli.dev/start!))
+    (catch java.io.FileNotFoundException _))
+
   (set! *warn-on-reflection* true)
   (when nrepl
     (start-nrepl)))
