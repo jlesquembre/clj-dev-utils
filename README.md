@@ -45,11 +45,12 @@ argument:
 - `args`: Arguments to the main function.
 - `nrepl`: Boolean, defaults to _true_. If true, an nrepl server will be
   started.
+- `portal`: Boolean, defaults to _false_. If true, calls `(portal.api/open)`
 
 E.g.:
 
 ```bash
-clj -X:user :main myname.myapp/-main :exec true :args '["foo"]' :nrepl true
+clj -X:user :main myname.myapp/-main :exec true :args '["foo"]' :nrepl true :portal true
 ```
 
 ## REPL helpers

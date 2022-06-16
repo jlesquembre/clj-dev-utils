@@ -15,6 +15,8 @@
 ;;
 ;; ------------
 
+(c.t.n.r/disable-reload!)
+
 (require '[sc.api :refer [letsc defsc]])
 
 (defmacro log
@@ -67,8 +69,7 @@
     (spit f (with-out-str (pprint/pprint content)))))
 
 
-(c.t.n.r/disable-reload!)
-(defonce portal (p/open))
+(def portal nil)
 
 ;; See
 ;; https://github.com/gfredericks/dot-slash-2
@@ -106,8 +107,9 @@
         {:var portal.api/clear
          :name ~'pclear}]}))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn init
-  [{:keys [main args exec nrepl]
+  [{:keys [main args exec nrepl] :as options
     :or {nrepl true
          exec false}}]
   (println "Loading local utils...")
@@ -121,6 +123,8 @@
       (println (str "Executing " main))
       (apply (resolve main) args)))
 
+  (when (:portal options)
+    (alter-var-root #'portal (fn [_] (p/open))))
   (add-tap #'p/submit)
 
   (try
