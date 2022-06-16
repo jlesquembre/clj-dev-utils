@@ -135,6 +135,18 @@
   (when nrepl
     (start-nrepl)))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
+(defn reload-system
+  []
+  (try
+    ((requiring-resolve 'donut.system.repl/stop))
+    ((requiring-resolve 'donut.system.repl/start))
+    (catch java.io.FileNotFoundException _))
+
+  (try
+    ((requiring-resolve 'integrant.repl/reset))
+    (catch java.io.FileNotFoundException _)))
+
 ;; Legacy utils, when I was using user.clj
 ;;
 ;; -----------
