@@ -36,8 +36,8 @@ Alternatively, if you prefer to clone the project locally:
 clj -X:user
 ```
 
-That command will execute the `local-utils/init` function. It takes 4 optional
-argument:
+That command will execute the `local-utils/init` function. It takes some
+optional arguments:
 
 - `main`: Main entry point for your program. It will require that namespace.
 - `exec`: Boolean, defaults to _false_. If true, the main function will be
@@ -46,11 +46,13 @@ argument:
 - `nrepl`: Boolean, defaults to _true_. If true, an nrepl server will be
   started.
 - `portal`: Boolean, defaults to _false_. If true, calls `(portal.api/open)`
+- `extra-requires`: Comma separated lists of libs to require. Executes
+  `(require '[lib])` for each lib.
 
 E.g.:
 
 ```bash
-clj -X:user :main myname.myapp/-main :exec true :args '["foo"]' :nrepl true :portal true
+clj -X:user :main myname.myapp/-main :exec true :args '["foo"]' :nrepl true :portal true :extra-requires dev,extra-lib
 ```
 
 ## REPL helpers

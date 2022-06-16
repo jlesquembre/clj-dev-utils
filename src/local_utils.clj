@@ -1,6 +1,7 @@
 (ns local-utils
   (:require
     [clojure.reflect :refer [reflect]]
+    [clojure.string :as string]
     [clojure.pprint :as pprint]
     [lambdaisland.deep-diff2 :as ddiff]
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
@@ -109,7 +110,7 @@
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn init
-  [{:keys [main args exec nrepl] :as options
+  [{:keys [main args exec nrepl extra-requires] :as options
     :or {nrepl true
          exec false}}]
   (println "Loading local utils...")
@@ -132,6 +133,15 @@
     (catch java.io.FileNotFoundException _))
 
   (set! *warn-on-reflection* true)
+
+  (when extra-requires
+    (->> (string/split (str extra-requires) #",")
+         (map (comp vector symbol string/trim))
+         (map (fn [lib]
+                (println (str "Extra require -> (require '" lib ")"))
+                lib))
+         (run! require)))
+
   (when nrepl
     (start-nrepl)))
 
