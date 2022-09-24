@@ -1,4 +1,7 @@
+name: "Update deps.edn"
+
 on:
+  workflow_dispatch: # allows manual triggering
   schedule:
     - cron: "1 5 * * 2"
 
