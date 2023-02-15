@@ -81,6 +81,9 @@
         {:var clojure.repl/source
          :name ~'source}
 
+        {:var donut.system.repl.state/system
+         :name ~'system}
+
         {:var lambdaisland.deep-diff2/diff
          :name ~'diff}
         diff-pp
