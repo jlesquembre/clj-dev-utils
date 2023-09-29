@@ -131,9 +131,10 @@
     (alter-var-root #'portal (fn [_] (p/open))))
   (add-tap #'p/submit)
 
-  (try
-    ((requiring-resolve 'malli.dev/start!))
-    (catch java.io.FileNotFoundException _))
+  ;; Moved to reload-system fn
+  ; (try
+  ;   ((requiring-resolve 'malli.dev/start!))
+  ;   (catch java.io.FileNotFoundException _))
 
   (set! *warn-on-reflection* true)
 
@@ -149,15 +150,27 @@
     (start-nrepl)))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
+;; Invoked after system reload by Conjure configuration
 (defn reload-system
   []
+
+  (try
+    ; From
+    ; https://github.com/metosin/malli/blob/39ccfef96b54beb3d862b1eab5f5be90ec0f4456/src/malli/dev.clj#L18-L44
+    ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/reporter))})
+    ((requiring-resolve 'malli.clj-kondo/emit!))
+    (println "Malli intrumentation reloaded...")
+    (catch java.io.FileNotFoundException _))
+
   (try
     ((requiring-resolve 'donut.system.repl/stop))
     ((requiring-resolve 'donut.system.repl/start))
+    (println "Donut system reloaded...")
     (catch java.io.FileNotFoundException _))
 
   (try
     ((requiring-resolve 'integrant.repl/reset))
+    (println "integrant system reloaded...")
     (catch java.io.FileNotFoundException _)))
 
 ;; Legacy utils, when I was using user.clj
