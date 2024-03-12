@@ -1,10 +1,10 @@
 {:deps
  {vvvvalvalval/scope-capture   {:mvn/version "0.3.3"}
   hashp/hashp                  {:mvn/version "0.2.2"}
-  lambdaisland/deep-diff2      {:mvn/version "2.10.211"}
+  lambdaisland/deep-diff2      {:mvn/version "2.11.216"}
   com.gfredericks/dot-slash-2  {:mvn/version "0.1.5"}
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
-  nrepl/nrepl  {:mvn/version "1.1.0"}
-  cider/cider-nrepl {:mvn/version "0.45.0"}
-  djblue/portal {:mvn/version "0.51.1"}}
+  nrepl/nrepl  {:mvn/version "1.1.1"}
+  cider/cider-nrepl {:mvn/version "0.47.0"}
+  djblue/portal {:mvn/version "0.52.2"}}
  :paths ["src"]}
