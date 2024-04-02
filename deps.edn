@@ -6,5 +6,5 @@
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
   nrepl/nrepl  {:mvn/version "1.1.1"}
   cider/cider-nrepl {:mvn/version "0.47.1"}
-  djblue/portal {:mvn/version "0.53.0"}}
+  djblue/portal {:mvn/version "0.54.0"}}
  :paths ["src"]}
