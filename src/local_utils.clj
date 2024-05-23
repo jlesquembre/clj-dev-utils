@@ -72,6 +72,25 @@
 
 (def portal nil)
 
+
+(defn system*
+  "Get a specific component instance. With no arguments returns set of all
+  component names."
+  [& args]
+  (try
+    (let [instance (requiring-resolve 'donut.system/instance)
+          my-system (deref (requiring-resolve 'donut.system.repl.state/system))]
+      (if (empty? args)
+        (instance my-system)
+        (instance my-system args)))
+    (catch java.io.FileNotFoundException _
+      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+
+
+(defn open-portal
+  []
+  (alter-var-root #'portal (fn [_] (p/open))))
+
 ;; See
 ;; https://github.com/gfredericks/dot-slash-2
 (defn my-dot-slash []
@@ -81,7 +100,10 @@
         {:var clojure.repl/source
          :name ~'source}
 
-        {:var donut.system.repl.state/system
+        ; {:var donut.system.repl.state/system
+        ;  :name ~'system}
+
+        {:var system*
          :name ~'system}
 
         {:var lambdaisland.deep-diff2/diff
@@ -108,6 +130,7 @@
         com.gfredericks.repl/pp
 
         portal
+        open-portal
         {:var portal.api/clear
          :name ~'pclear}]}))
 
@@ -128,7 +151,8 @@
       (apply (resolve main) args)))
 
   (when (:portal options)
-    (alter-var-root #'portal (fn [_] (p/open))))
+    (open-portal))
+    ; (alter-var-root #'portal (fn [_] (p/open))))
   (add-tap #'p/submit)
 
   ;; Moved to reload-system fn
