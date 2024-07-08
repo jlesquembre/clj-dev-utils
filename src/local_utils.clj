@@ -72,6 +72,13 @@
 
 (def portal nil)
 
+(defn get-system
+  []
+  (try
+    (deref (requiring-resolve 'donut.system.repl.state/system))
+    (catch java.io.FileNotFoundException _
+      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+
 
 (defn system*
   "Get a specific component instance. With no arguments returns set of all
@@ -86,6 +93,31 @@
     (catch java.io.FileNotFoundException _
       (println "ERROR: Did you include donut.system in your deps.edn file?"))))
 
+
+(defn system-fn*
+  "Like system*, but returns a function that will return the component instance"
+  []
+  (try
+    (let [instance (requiring-resolve 'donut.system/instance)
+          my-system (deref (requiring-resolve 'donut.system.repl.state/system))]
+      (fn
+        ([] (instance my-system))
+        ([& args] (instance my-system args))))
+    (catch java.io.FileNotFoundException _
+      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+
+(deftype SystemHelper []
+  clojure.lang.ILookup
+   (valAt [_ k] ((system-fn*) k))
+  clojure.lang.IFn
+   (invoke [_] ((system-fn*)))
+   (invoke [_ arg1] ((system-fn*) arg1))
+   (invoke [_ arg1 arg2] ((system-fn*) arg1 arg2))
+   (invoke [_ arg1 arg2 arg3] ((system-fn*) arg1 arg2 arg3))
+   (invoke [_ arg1 arg2 arg3 arg4] ((system-fn*) arg1 arg2 arg3 arg4))
+   (invoke [_ arg1 arg2 arg3 arg4 arg5] ((system-fn*) arg1 arg2 arg3 arg4 arg5)))
+
+(def system-helper (->SystemHelper))
 
 (defn open-portal
   []
@@ -103,7 +135,10 @@
         ; {:var donut.system.repl.state/system
         ;  :name ~'system}
 
-        {:var system*
+        ; {:var get-system
+        ;  :name ~'system*}
+
+        {:var system-helper
          :name ~'system}
 
         {:var lambdaisland.deep-diff2/diff
