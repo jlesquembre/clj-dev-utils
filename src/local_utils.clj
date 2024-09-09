@@ -6,6 +6,7 @@
     [lambdaisland.deep-diff2 :as ddiff]
     [com.gfredericks.dot-slash-2 :as dot-slash-2]
     [hashp.core]
+    [snitch.core :as snitch]
     [portal.api :as p]
     [nrepl.cmdline]
     [clojure.tools.namespace.repl :as c.t.n.r]))
@@ -167,7 +168,19 @@
         portal
         open-portal
         {:var portal.api/clear
-         :name ~'pclear}]}))
+         :name ~'pclear}
+
+        {:var snitch/defn*
+         :name ~'defn}
+
+        {:var snitch/defmethod*
+         :name ~'defmethod}
+
+        {:var snitch/*fn
+         :name ~'fn}
+
+        {:var snitch/*let
+         :name ~'let}]}))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn init
