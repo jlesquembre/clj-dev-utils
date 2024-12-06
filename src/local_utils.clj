@@ -235,9 +235,13 @@
     (catch java.io.FileNotFoundException _))
 
   (try
-    ((requiring-resolve 'donut.system.repl/stop))
-    ((requiring-resolve 'donut.system.repl/start))
-    (println "Donut system reloaded...")
+    (if (not (contains? (methods @(requiring-resolve 'donut.system/named-system))
+                        :donut.system/repl))
+      (println "No donut.system/repl defined, skip system reload")
+      (do
+        ((requiring-resolve 'donut.system.repl/stop))
+        ((requiring-resolve 'donut.system.repl/start))
+        (println "Donut system reloaded...")))
     (catch java.io.FileNotFoundException _))
 
   (try
