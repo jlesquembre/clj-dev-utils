@@ -78,7 +78,7 @@
   (try
     (deref (requiring-resolve 'donut.system.repl.state/system))
     (catch java.io.FileNotFoundException _
-      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+      (println "ERROR Did you include donut.system in your deps.edn file?"))))
 
 
 (defn system*
@@ -92,7 +92,7 @@
         (instance my-system)
         (instance my-system args)))
     (catch java.io.FileNotFoundException _
-      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+      (println "ERROR Did you include donut.system in your deps.edn file?"))))
 
 
 (defn system-fn*
@@ -105,7 +105,7 @@
         ([] (instance my-system))
         ([& args] (instance my-system args))))
     (catch java.io.FileNotFoundException _
-      (println "ERROR: Did you include donut.system in your deps.edn file?"))))
+      (println "ERROR Did you include donut.system in your deps.edn file?"))))
 
 (deftype SystemHelper []
   clojure.lang.ILookup
@@ -187,15 +187,15 @@
   [{:keys [main args exec nrepl extra-requires] :as options
     :or {nrepl true
          exec false}}]
-  (println "Loading local utils...")
+  (println "INFO Loading local utils...")
   (my-dot-slash)
 
   (when main
     (let [my-ns (-> main namespace symbol)]
-      (println (str "Loading " my-ns))
+      (println (str "INFO Loading " my-ns))
       (require my-ns))
     (when exec
-      (println (str "Executing " main))
+      (println (str "INFO Executing " main))
       (apply (resolve main) args)))
 
   (when (:portal options)
@@ -231,22 +231,22 @@
     ; https://github.com/metosin/malli/blob/39ccfef96b54beb3d862b1eab5f5be90ec0f4456/src/malli/dev.clj#L18-L44
     ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/reporter))})
     ((requiring-resolve 'malli.clj-kondo/emit!))
-    (println "Malli intrumentation reloaded...")
+    (println "INFO Malli intrumentation reloaded...")
     (catch java.io.FileNotFoundException _))
 
   (try
     (if (not (contains? (methods @(requiring-resolve 'donut.system/named-system))
                         :donut.system/repl))
-      (println "No donut.system/repl defined, skip system reload")
+      (println "INFO No donut.system/repl defined, skip system reload")
       (do
         ((requiring-resolve 'donut.system.repl/stop))
         ((requiring-resolve 'donut.system.repl/start))
-        (println "Donut system reloaded...")))
+        (println "INFO Donut system reloaded...")))
     (catch java.io.FileNotFoundException _))
 
   (try
     ((requiring-resolve 'integrant.repl/reset))
-    (println "integrant system reloaded...")
+    (println "INFO integrant system reloaded...")
     (catch java.io.FileNotFoundException _)))
 
 ;; Legacy utils, when I was using user.clj
