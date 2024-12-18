@@ -111,6 +111,7 @@
   clojure.lang.ILookup
    (valAt [_ k] ((system-fn*) k))
   clojure.lang.IFn
+   (applyTo [this xs] (clojure.lang.AFn/applyToHelper  this xs))
    (invoke [_] ((system-fn*)))
    (invoke [_ arg1] ((system-fn*) arg1))
    (invoke [_ arg1 arg2] ((system-fn*) arg1 arg2))
