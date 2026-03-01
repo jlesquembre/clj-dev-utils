@@ -230,7 +230,7 @@
   (try
     ; From
     ; https://github.com/metosin/malli/blob/39ccfef96b54beb3d862b1eab5f5be90ec0f4456/src/malli/dev.clj#L18-L44
-    ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/reporter))})
+    ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/thrower))})
     ((requiring-resolve 'malli.clj-kondo/emit!))
     (println "INFO Malli intrumentation reloaded...")
     (catch java.io.FileNotFoundException _))
