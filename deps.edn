@@ -7,5 +7,6 @@
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
   nrepl/nrepl  {:mvn/version "1.6.0"}
   cider/cider-nrepl {:mvn/version "0.58.0"}
-  djblue/portal {:mvn/version "0.63.1"}}
+  djblue/portal {:mvn/version "0.63.1"}
+  io.github.tonsky/clj-reload {:mvn/version "1.0.0"}}
  :paths ["src"]}

@@ -1,4 +1,4 @@
-(ns local-utils
+(ns ^:clj-reload/no-reload local-utils
   (:require
     [clojure.reflect :refer [reflect]]
     [clojure.string :as string]
@@ -9,15 +9,13 @@
     [snitch.core :as snitch]
     [portal.api :as p]
     [nrepl.cmdline]
-    [clojure.tools.namespace.repl :as c.t.n.r]))
+    [clj-reload.core :as reload]))
 
 ;; ------------
 ;;
 ;; Global utils
 ;;
 ;; ------------
-
-(c.t.n.r/disable-reload!)
 
 (require '[sc.api :refer [letsc defsc]])
 
@@ -54,9 +52,6 @@
       (sort-by :name)
       (map #(select-keys % [:name :parameter-types]))))
 
-(defn start-nrepl
-  []
-  (nrepl.cmdline/-main "--middleware" "[cider.nrepl/cider-middleware]"))
 
 (defn diff-pp
   "Compare two values recursively."
@@ -183,20 +178,62 @@
         {:var snitch/*let
          :name ~'let}]}))
 
+;; Invoked after system reload by Conjure configuration
+(defn reload-system
+  []
+
+  (try
+    ; From
+    ; https://github.com/metosin/malli/blob/39ccfef96b54beb3d862b1eab5f5be90ec0f4456/src/malli/dev.clj#L18-L44
+    ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/thrower))})
+    ((requiring-resolve 'malli.clj-kondo/emit!))
+    (println "[INFO] Malli intrumentation reloaded...")
+    (catch java.io.FileNotFoundException _))
+
+  (or
+    (try
+      (if (not (contains? (methods @(requiring-resolve 'donut.system/named-system))
+                          :donut.system/repl))
+        (println "[INFO] No donut.system/repl defined, skip system reload")
+        (do
+          ((requiring-resolve 'donut.system.repl/stop))
+          (let [r ((requiring-resolve 'donut.system.repl/start))]
+            (println "[INFO] Donut system reloaded...")
+            r)))
+      (catch java.io.FileNotFoundException _))
+
+    (try
+      ((requiring-resolve 'integrant.repl/reset))
+      (println "[INFO] integrant system reloaded...")
+      (catch java.io.FileNotFoundException _))))
+
+
+(defn custom-reload
+  ([] (custom-reload :changed))
+  ([only]
+   (let [result (reload/reload {:only only})]
+     {:system (reload-system)
+      :clj-reload result})))
+
+(defn start-nrepl
+  []
+  (custom-reload :all)
+  (nrepl.cmdline/-main "--middleware" "[cider.nrepl/cider-middleware]"))
+
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn init
   [{:keys [main args exec nrepl extra-requires] :as options
     :or {nrepl true
          exec false}}]
-  (println "INFO Loading local utils...")
+  (println "[INFO] Loading local utils...")
   (my-dot-slash)
 
   (when main
     (let [my-ns (-> main namespace symbol)]
-      (println (str "INFO Loading " my-ns))
+      (println (str "[INFO] Loading " my-ns))
       (require my-ns))
     (when exec
-      (println (str "INFO Executing " main))
+      (println (str "[INFO] Executing " main))
       (apply (resolve main) args)))
 
   (when (:portal options)
@@ -221,34 +258,6 @@
 
   (when nrepl
     (start-nrepl)))
-
-#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
-;; Invoked after system reload by Conjure configuration
-(defn reload-system
-  []
-
-  (try
-    ; From
-    ; https://github.com/metosin/malli/blob/39ccfef96b54beb3d862b1eab5f5be90ec0f4456/src/malli/dev.clj#L18-L44
-    ((requiring-resolve 'malli.instrument/instrument!) {:report ((requiring-resolve 'malli.dev.pretty/thrower))})
-    ((requiring-resolve 'malli.clj-kondo/emit!))
-    (println "INFO Malli intrumentation reloaded...")
-    (catch java.io.FileNotFoundException _))
-
-  (try
-    (if (not (contains? (methods @(requiring-resolve 'donut.system/named-system))
-                        :donut.system/repl))
-      (println "INFO No donut.system/repl defined, skip system reload")
-      (do
-        ((requiring-resolve 'donut.system.repl/stop))
-        ((requiring-resolve 'donut.system.repl/start))
-        (println "INFO Donut system reloaded...")))
-    (catch java.io.FileNotFoundException _))
-
-  (try
-    ((requiring-resolve 'integrant.repl/reset))
-    (println "INFO integrant system reloaded...")
-    (catch java.io.FileNotFoundException _)))
 
 ;; Legacy utils, when I was using user.clj
 ;;
