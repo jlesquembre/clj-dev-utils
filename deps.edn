@@ -2,7 +2,7 @@
  {vvvvalvalval/scope-capture   {:mvn/version "0.3.3"}
   hashp/hashp                  {:mvn/version "0.2.2"}
   org.clojars.abhinav/snitch   {:mvn/version "0.1.16"}
-  lambdaisland/deep-diff2      {:mvn/version "2.12.219"}
+  lambdaisland/deep-diff2      {:mvn/version "2.13.231"}
   com.gfredericks/dot-slash-2  {:mvn/version "0.1.5"}
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
   nrepl/nrepl  {:mvn/version "1.6.0"}
