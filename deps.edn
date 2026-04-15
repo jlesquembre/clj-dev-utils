@@ -8,5 +8,8 @@
   nrepl/nrepl  {:mvn/version "1.7.0"}
   cider/cider-nrepl {:mvn/version "0.59.0"}
   djblue/portal {:mvn/version "0.63.1"}
-  io.github.tonsky/clj-reload {:mvn/version "1.0.0"}}
+  io.github.tonsky/clj-reload {:mvn/version "1.0.0"}
+  org.clojure/java.doc {:git/url "https://github.com/clojure/java.doc"
+                        :git/tag "v0.1.4"
+                        :git/sha "34e381e"}}
  :paths ["src"]}

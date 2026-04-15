@@ -9,6 +9,7 @@
     [snitch.core :as snitch]
     [portal.api :as p]
     [nrepl.cmdline]
+    [clojure.java.doc.api :refer [jdoc jdoc-data sigs]]
     [clj-reload.core :as reload]))
 
 ;; ------------
@@ -150,7 +151,10 @@
         sc.api/spy
         logsc
 
+        ;; still needed? now we have jdoc/sigs
         jmethods
+
+        jdoc jdoc-data sigs
 
         log
 
