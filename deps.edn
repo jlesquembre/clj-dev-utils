@@ -5,8 +5,8 @@
   lambdaisland/deep-diff2      {:mvn/version "2.14.235"}
   com.gfredericks/dot-slash-2  {:mvn/version "0.1.5"}
   com.gfredericks/repl-utils   {:mvn/version "0.2.22"}
-  nrepl/nrepl  {:mvn/version "1.7.0"}
-  cider/cider-nrepl {:mvn/version "0.62.2"}
+  nrepl/nrepl  {:mvn/version "1.8.0"}
+  cider/cider-nrepl {:mvn/version "0.63.1"}
   djblue/portal {:mvn/version "0.67.2"}
   io.github.tonsky/clj-reload {:mvn/version "1.0.0"}
   org.clojure/java.doc {:git/url "https://github.com/clojure/java.doc"
